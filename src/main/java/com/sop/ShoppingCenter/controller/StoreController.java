@@ -12,52 +12,52 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sop.ShoppingCenter.service.CustomerService;
+import com.sop.ShoppingCenter.service.StoreService;
 
 @RestController
-public class CustomerController implements Controllers {
+public class StoreController implements Controllers {
 
 	@Autowired
-	@Qualifier("customerService")
-	CustomerService customerService;
+	@Qualifier("storeService")
+	StoreService storeService;
 
 	@Override
-	@GetMapping("/customer/{id}")
+	@GetMapping("/store/{id}")
 	public Object getById(@PathVariable int id) {
-		return customerService.getById(id);
+		return storeService.getById(id);
 	}
 
 	@Override
-	@GetMapping("/customer")
+	@GetMapping("/store")
 	public Object getAll() {
-		return customerService.getAll();
+		return storeService.getAll();
 	}
 
 	@Override
-	@PostMapping("/customer")
+	@PostMapping("/store")
 	public Object create(@RequestBody @Valid Object item) {
-		customerService.create(item);
-		return customerService.getAll();
+		storeService.create(item);
+		return storeService.getAll();
 	}
 
 	@Override
-	@PutMapping("/customer/{id}")
+	@PutMapping("/store/{id}")
 	public Object update(@PathVariable int id, @RequestBody @Valid Object item) {
-		customerService.update(id, item);
-		return customerService.getAll();
+		storeService.update(id, item);
+		return storeService.getAll();
 	}
 
 	@Override
-	@DeleteMapping("/customer/{id}")
+	@DeleteMapping("/store/{id}")
 	public Object deleteById(@PathVariable int id) {
-		customerService.deleteById(id);
-		return customerService.getAll();
+		storeService.deleteById(id);
+		return storeService.getAll();
 		
 	}
 
 	@Override
-	@DeleteMapping("/customer")
+	@DeleteMapping("/store")
 	public void deleteAll() {
-		customerService.deleteAll();
+		storeService.deleteAll();
 	}
 }
