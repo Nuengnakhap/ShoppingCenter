@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sop.ShoppingCenter.model.Store;
 import com.sop.ShoppingCenter.service.StoreService;
 
 @RestController
@@ -36,14 +39,18 @@ public class StoreController implements Controllers {
 	@Override
 	@PostMapping("/store")
 	public Object create(@RequestBody @Valid Object item) {
-		storeService.create(item);
+		ObjectMapper mapper = new ObjectMapper();
+		Store store = mapper.convertValue(item, new TypeReference<Store>(){});
+		storeService.create(store);
 		return storeService.getAll();
 	}
 
 	@Override
 	@PutMapping("/store/{id}")
 	public Object update(@PathVariable int id, @RequestBody @Valid Object item) {
-		storeService.update(id, item);
+		ObjectMapper mapper = new ObjectMapper();
+		Store store = mapper.convertValue(item, new TypeReference<Store>(){});
+		storeService.update(id, store);
 		return storeService.getAll();
 	}
 

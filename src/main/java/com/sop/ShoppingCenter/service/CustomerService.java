@@ -27,7 +27,6 @@ public class CustomerService implements Services {
 
 	@Override
 	public void create(Object item) {
-		System.out.println(item);
 		Customer cus = (Customer) item;
 		cus.setId(((int) customerRepository.count() + 1));
 		customerRepository.save(cus);
@@ -52,6 +51,10 @@ public class CustomerService implements Services {
 	@Override
 	public void deleteAll() {
 		customerRepository.deleteAll();
+	}
+	
+	public Boolean getByEmail(String email) {
+		return customerRepository.findByEmail(email).isPresent();
 	}
 
 }

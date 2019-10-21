@@ -9,18 +9,23 @@ import javax.persistence.ManyToOne;
 public class Store {
 
 	@Id
-	int id;
-	String storeName;
-	String phone;
-	String email;
-	String street;
-	String city;
-	String state;
-	String zipCode;
+	private int id;
+	private String storeName;
+	private String phone;
+	private String email;
+	private String address;
+	private String street;
+	private String city;
+	private String state;
+	private String zipCode;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	Customer customer;
+
+	public Store() {
+		super();
+	}
 
 	public int getId() {
 		return id;
@@ -84,6 +89,14 @@ public class Store {
 
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 }
