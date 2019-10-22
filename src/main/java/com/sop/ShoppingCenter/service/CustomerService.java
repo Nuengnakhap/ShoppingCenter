@@ -33,19 +33,23 @@ public class CustomerService implements Services {
 	}
 
 	@Override
-	public void update(int id, Object item) {
+	public Boolean update(int id, Object item) {
 		if (customerRepository.findById(id).isPresent()) {
 			Customer cus = (Customer) item;
 			cus.setId(id);
 			customerRepository.save(cus);
+			return true;
 		}
+		return false;
 	}
 
 	@Override
-	public void deleteById(int id) {
+	public Boolean deleteById(int id) {
 		if (customerRepository.findById(id).isPresent()) {
 			customerRepository.deleteById(id);
+			return true;
 		}
+		return false;
 	}
 
 	@Override

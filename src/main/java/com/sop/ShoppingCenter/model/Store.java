@@ -6,7 +6,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Store {
+public class Store extends BaseEntity {
 
 	@Id
 	private int id;

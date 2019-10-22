@@ -32,19 +32,23 @@ public class StoreService implements Services {
 	}
 
 	@Override
-	public void update(int id, Object item) {
+	public Boolean update(int id, Object item) {
 		if (storeRepository.findById(id).isPresent()) {
 			Store store = (Store) item;
 			store.setId(id);
 			storeRepository.save(store);
+			return true;
 		}
+		return false;
 	}
 
 	@Override
-	public void deleteById(int id) {
+	public Boolean deleteById(int id) {
 		if (storeRepository.findById(id).isPresent()) {
 			storeRepository.deleteById(id);
+			return true;
 		}
+		return false;
 	}
 
 	@Override

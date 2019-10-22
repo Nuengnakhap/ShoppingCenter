@@ -1,7 +1,5 @@
 package com.sop.ShoppingCenter.controller;
 
-import java.util.Date;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +29,16 @@ public class CustomerController implements Controllers {
 	@Override
 	@GetMapping("/customer/{id}")
 	public Object getById(@PathVariable int id) {
-		return customerService.getById(id);
+		if (customerService.getById(id) != null) {
+			return new ResponseMessage(HttpStatus.OK.value(), customerService.getById(id));
+		}
+		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
 	}
 
 	@Override
 	@GetMapping("/customer")
 	public Object getAll() {
-		return customerService.getAll();
+		return new ResponseMessage(HttpStatus.OK.value(), customerService.getAll());
 	}
 
 	@Override
@@ -46,10 +47,10 @@ public class CustomerController implements Controllers {
 		ObjectMapper mapper = new ObjectMapper();
 		Customer cus = mapper.convertValue(item, new TypeReference<Customer>() {});
 		if (customerService.getByEmail(cus.getEmail())) {
-			return new ResponseMessage(new Date(), HttpStatus.CONFLICT.value(), "Email has already taken");
+			return new ResponseMessage(HttpStatus.CONFLICT.value(), "Email has already taken");
 		} else {
 			customerService.create(cus);
-			return new ResponseMessage(new Date(), HttpStatus.CREATED.value(), cus);
+			return new ResponseMessage(HttpStatus.CREATED.value(), cus);
 		}
 	}
 
@@ -57,18 +58,20 @@ public class CustomerController implements Controllers {
 	@PutMapping("/customer/{id}")
 	public Object update(@PathVariable int id, @RequestBody @Valid Object item) {
 		ObjectMapper mapper = new ObjectMapper();
-		Customer cus = mapper.convertValue(item, new TypeReference<Customer>() {
-		});
-		customerService.update(id, cus);
-		return customerService.getAll();
+		Customer cus = mapper.convertValue(item, new TypeReference<Customer>() {});
+		if (customerService.update(id, cus)) {
+			return new ResponseMessage(HttpStatus.OK.value(), cus);
+		}
+		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
 	}
 
 	@Override
 	@DeleteMapping("/customer/{id}")
 	public Object deleteById(@PathVariable int id) {
-		customerService.deleteById(id);
-		return customerService.getAll();
-
+		if (customerService.deleteById(id)) {
+			return new ResponseMessage(HttpStatus.OK.value(), "Data has been deleted");
+		}
+		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
 	}
 
 	@Override

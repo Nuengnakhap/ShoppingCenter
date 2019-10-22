@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sop.ShoppingCenter.model.Store;
+import com.sop.ShoppingCenter.response.ResponseMessage;
 import com.sop.ShoppingCenter.service.StoreService;
 
 @RestController
@@ -27,7 +29,10 @@ public class StoreController implements Controllers {
 	@Override
 	@GetMapping("/store/{id}")
 	public Object getById(@PathVariable int id) {
-		return storeService.getById(id);
+		if (storeService.getById(id) != null) {
+			return new ResponseMessage(HttpStatus.OK.value(), storeService.getById(id));
+		}
+		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
 	}
 
 	@Override
@@ -50,16 +55,19 @@ public class StoreController implements Controllers {
 	public Object update(@PathVariable int id, @RequestBody @Valid Object item) {
 		ObjectMapper mapper = new ObjectMapper();
 		Store store = mapper.convertValue(item, new TypeReference<Store>(){});
-		storeService.update(id, store);
-		return storeService.getAll();
+		if (storeService.update(id, store)) {
+			return new ResponseMessage(HttpStatus.OK.value(), store);
+		}
+		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
 	}
 
 	@Override
 	@DeleteMapping("/store/{id}")
 	public Object deleteById(@PathVariable int id) {
-		storeService.deleteById(id);
-		return storeService.getAll();
-		
+		if (storeService.deleteById(id)) {
+			return new ResponseMessage(HttpStatus.OK.value(), "Data has been deleted");
+		}
+		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
 	}
 
 	@Override
