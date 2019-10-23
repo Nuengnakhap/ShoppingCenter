@@ -1,0 +1,71 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 60vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  background-image: linear-gradient(
+    -52.9deg,
+    #45108a 2.02%,
+    #3d065f 29.29%,
+    #10054d 100%
+  );
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  padding: 10vmin 0;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+
+.Div-logo {
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.home-title {
+  text-align: center;
+  font-size: 10vmin;
+  font-family: "Oxygen-Bold";
+  cursor: default;
+}
+
+.shop-button {
+  display: inline-flex;
+  padding: 1.5vmin 3vmin;
+  border-radius: 60px;
+  background-image: linear-gradient(-90deg, #ffa98c 3.54%, #ad00bd 98.48%);
+  box-shadow: 0 4px 15px 0 rgba(126, 52, 161, 0.75);
+  font-family: "Oxygen-Light";
+  font-size: calc(1px + 2vmin);
+  cursor: pointer;
+  color: #fff;
+}
+
+.btn-hover {
+  border: none;
+  background-size: 300% 100%;
+  moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.btn-hover:hover {
+  background-position: 100% 0;
+  moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}

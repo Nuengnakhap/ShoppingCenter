@@ -1,0 +1,30 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 60vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  background-image: linear-gradient(142.9deg, #45108A 2.02%, #3D065F 29.29%, #10054D 100% );
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  padding: 10vmin 0;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+
+.Div-logo {
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
