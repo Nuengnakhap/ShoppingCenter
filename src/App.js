@@ -8,6 +8,7 @@ import NavBar from "./components/nav";
 import "./assets/css/fonts.css";
 import "./assets/css/global.css"
 import ImageUpload from "./components/upload/ImageUpload";
+import StoreScreen from "./screen/store";
 
 function App() {
   return (
@@ -17,8 +18,8 @@ function App() {
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
-          <Route path="/about">
-            <ImageUpload />
+          <Route path="/store">
+            <StoreScreen />
           </Route>
           <Route path="/users">
             <HomeScreen />

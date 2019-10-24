@@ -1,1 +1,5 @@
-export default {};
+import { customer } from "./customer"
+
+export default {
+  customer
+};

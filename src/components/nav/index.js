@@ -32,17 +32,17 @@ export default class NavBar extends Component {
         <ul className="nav-side">
           <li className="nav__items">
             <FontAwesomeIcon icon={faHome} />
-            <a href="/">Home</a>
+            <Link to="/">Home</Link>
           </li>
 
           <li className="nav__items">
             <FontAwesomeIcon icon={faSearch} />
-            <a href="/">Search</a>
+            <Link to="/">Search</Link>
           </li>
 
           <li className="nav__items">
             <FontAwesomeIcon icon={faStore} />
-            <a href="/">Store</a>
+            <Link to="/store">Store</Link>
           </li>
         </ul>
       </nav>

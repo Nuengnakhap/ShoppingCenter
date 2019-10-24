@@ -1,0 +1,9 @@
+.item {
+  padding-top: 10px;
+}
+
+.hvr-float {
+  transition-property: transform, opacity !important;
+  transition-duration: 400ms !important;
+  transition-timing-function: ease-out !important;
+}
