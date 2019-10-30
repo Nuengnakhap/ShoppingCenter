@@ -40,7 +40,7 @@ export default class StoreScreen extends Component {
       <div className="content">
         <Cart />
         <div className="content-inner logo">
-          <div style={{ padding: "0 5vmin", textAlign: "center" }}>
+          <div className="logo-title" style={{ padding: "0 5vmin", textAlign: "center" }}>
             <p className="home-title">SHOPPING</p>
             <p className="home-title">CENTER</p>
           </div>

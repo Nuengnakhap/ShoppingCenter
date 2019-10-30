@@ -96,6 +96,7 @@
   bottom: 2vmin;
   right: 10vmin;
   cursor: pointer;
+  z-index: 10;
 }
 
 .shopping-cart > img {

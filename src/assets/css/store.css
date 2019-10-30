@@ -113,10 +113,17 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding: 10vmin 0;
 }
 
-.content-inner.logo > div > .home-title {
+.content-inner.logo > .logo-title > .home-title {
   font-size: 8vmin;
+}
+
+@media screen and (max-width: 1300px) {
+  .content-inner.logo > .logo-title {
+    display: none;
+  }
 }
 
 .content-inner.logo > div > .center-images {
