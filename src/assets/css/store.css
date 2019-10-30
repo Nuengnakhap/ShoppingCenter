@@ -91,3 +91,34 @@
 .card-container:hover .overlay {
   opacity: 1;
 }
+
+.content-inner > .title {
+  color: black;
+  font-family: Oxygen-Bold;
+  margin-bottom: 2vmin;
+}
+
+.content-inner.logo {
+  background-color: #282c34;
+  background-image: linear-gradient(
+    -52.9deg,
+    #45108a 2.02%,
+    #3d065f 29.29%,
+    #10054d 100%
+  );
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.content-inner.logo > div > .home-title {
+  font-size: 8vmin;
+}
+
+.content-inner.logo > div > .center-images {
+  height: 40vmin;
+}

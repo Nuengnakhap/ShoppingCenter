@@ -12,7 +12,7 @@ import StoreScreen from "./screen/store";
 function App() {
   return (
     <Router>
-      <div style={styles.app}>
+      <div style={styles.app} className="background">
         <NavBar style={styles.nav} />
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
