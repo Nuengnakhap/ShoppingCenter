@@ -13,6 +13,9 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import Cart from "../../components/cart";
 import logo from "../../assets/images/logo/shopping.png";
+import logo2 from "../../assets/images/logo/shopping2.png";
+import Slider from "../../components/slider";
+import Header from "../../components/header";
 
 library.add(fas, fab, far);
 
@@ -39,20 +42,19 @@ export default class StoreScreen extends Component {
     return (
       <div className="content">
         <Cart />
-        <div className="content-inner logo">
-          <div className="logo-title" style={{ padding: "0 5vmin", textAlign: "center" }}>
-            <p className="home-title">SHOPPING</p>
-            <p className="home-title">CENTER</p>
-          </div>
-          <div>
-            <img
-              src={logo}
-              className="center-images"
-              style={{ padding: "0 5vmin" }}
-              alt="logo"
-            />
-          </div>
-        </div>
+        <Header
+          mainClass="content-inner logo sec-header"
+          logo={logo}
+          componentLeft={
+            <div
+              className="logo-title"
+              style={{ padding: "0 5vmin", textAlign: "center" }}
+            >
+              <p className="home-title">SHOPPING</p>
+              <p className="home-title">CENTER</p>
+            </div>
+          }
+        />
         <div className="content-inner">
           <div className="title">Bestsellers</div>
           <OwlCarousel
@@ -76,32 +78,27 @@ export default class StoreScreen extends Component {
                 <FontAwesomeIcon
                   icon={["far", "heart"]}
                   color="black"
-                  size="xs"
-                  style={{ margin: "0 2px" }}
+                  style={{ margin: "0 2px", fontSize: "2vmin" }}
                 />
                 <FontAwesomeIcon
                   icon={["far", "heart"]}
                   color="black"
-                  size="xs"
-                  style={{ margin: "0 2px" }}
+                  style={{ margin: "0 2px", fontSize: "2vmin" }}
                 />
                 <FontAwesomeIcon
                   icon={["far", "heart"]}
                   color="black"
-                  size="xs"
-                  style={{ margin: "0 2px" }}
+                  style={{ margin: "0 2px", fontSize: "2vmin" }}
                 />
                 <FontAwesomeIcon
                   icon={["far", "heart"]}
                   color="black"
-                  size="xs"
-                  style={{ margin: "0 2px" }}
+                  style={{ margin: "0 2px", fontSize: "2vmin" }}
                 />
                 <FontAwesomeIcon
                   icon={["far", "heart"]}
                   color="black"
-                  size="xs"
-                  style={{ margin: "0 2px" }}
+                  style={{ margin: "0 2px", fontSize: "2vmin" }}
                 />
               </div>
               <div className="card-title">My Product</div>
@@ -113,6 +110,63 @@ export default class StoreScreen extends Component {
             </div>
           </OwlCarousel>
         </div>
+        <Header
+          mainClass="content-inner logo sec-shop"
+          logo={logo2}
+          componentLeft={
+            <div className="button btn-hover">
+              <Link to="/">SHOP ALL</Link>
+            </div>
+          }
+        />
+        <Slider title="Best Stores" options={options}>
+          <div className="card-product">
+            <div className="card-container">
+              <img className="owl-lazy card-image" alt="item" src={bg1} />
+              <div className="overlay">
+                <Link to="/">Quick View</Link>
+              </div>
+            </div>
+            <div className="card-rating">
+              <FontAwesomeIcon
+                icon={["far", "heart"]}
+                color="black"
+                size="xs"
+                style={{ margin: "0 2px", fontSize: "2vmin" }}
+              />
+              <FontAwesomeIcon
+                icon={["far", "heart"]}
+                color="black"
+                size="xs"
+                style={{ margin: "0 2px", fontSize: "2vmin" }}
+              />
+              <FontAwesomeIcon
+                icon={["far", "heart"]}
+                color="black"
+                size="xs"
+                style={{ margin: "0 2px", fontSize: "2vmin" }}
+              />
+              <FontAwesomeIcon
+                icon={["far", "heart"]}
+                color="black"
+                size="xs"
+                style={{ margin: "0 2px", fontSize: "2vmin" }}
+              />
+              <FontAwesomeIcon
+                icon={["far", "heart"]}
+                color="black"
+                size="xs"
+                style={{ margin: "0 2px", fontSize: "2vmin" }}
+              />
+            </div>
+            <div className="card-title">My Product</div>
+            <div>
+              <div className="button btn-hover">
+                <Link to="/">Add to bag</Link>
+              </div>
+            </div>
+          </div>
+        </Slider>
       </div>
     );
   }

@@ -99,13 +99,6 @@
 }
 
 .content-inner.logo {
-  background-color: #282c34;
-  background-image: linear-gradient(
-    -52.9deg,
-    #45108a 2.02%,
-    #3d065f 29.29%,
-    #10054d 100%
-  );
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -116,11 +109,34 @@
   padding: 10vmin 0;
 }
 
+.sec-header {
+  background-color: #282c34;
+  background-image: linear-gradient(
+    -52.9deg,
+    #45108a 2.02%,
+    #3d065f 29.29%,
+    #10054d 100%
+  );
+}
+
+.sec-shop {
+  background-color: #ffcbca;
+}
+
+.sec-shop > .button {
+  padding: 10px 5vmin;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
 .content-inner.logo > .logo-title > .home-title {
   font-size: 8vmin;
 }
 
 @media screen and (max-width: 1300px) {
+  .content-inner.logo {
+    padding: 5vmin 0;
+  }
   .content-inner.logo > .logo-title {
     display: none;
   }
