@@ -7,7 +7,6 @@ import NavBar from "./components/nav";
 // import "./App.css";
 import "./assets/css/fonts.css";
 import "./assets/css/global.css"
-import ImageUpload from "./components/upload/ImageUpload";
 import StoreScreen from "./screen/store";
 
 function App() {
