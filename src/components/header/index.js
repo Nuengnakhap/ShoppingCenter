@@ -1,27 +1,27 @@
-import React, { Component } from "react";
+import React from "react";
 import "../../assets/css/header.css";
 import PropTypes from "prop-types";
 
-export default class Header extends Component {
-  render() {
-    return (
-      <div className={this.props.mainClass}>
-        {this.props.componentLeft}
-        <div>
-          <img
-            src={this.props.logo}
-            className="center-images"
-            style={{ padding: "0 5vmin" }}
-            alt="logo"
-          />
-        </div>
+function Header(props) {
+  return (
+    <div className={props.mainClass}>
+      {props.componentLeft}
+      <div>
+        <img
+          src={props.logo}
+          className="center-images"
+          style={{ padding: "0 5vmin" }}
+          alt="logo"
+        />
       </div>
-    );
-  }
+    </div>
+  );
 }
+
+export default Header;
 
 Header.propTypes = {
   logo: PropTypes.string,
   componentLeft: PropTypes.element,
   mainClass: PropTypes.string
-}
+};

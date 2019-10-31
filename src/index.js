@@ -10,7 +10,7 @@ import "bootstrap/dist/js/bootstrap";
 
 const MyApp = () => (
   <Provider store={store}>
-    <App />
+    <App store={store} />
   </Provider>
 );
 ReactDOM.render(<MyApp />, document.getElementById("root"));

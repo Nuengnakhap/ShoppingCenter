@@ -1,5 +1,7 @@
 import { customer } from "./customer"
+import { cart } from "./cart"
 
 export default {
-  customer
+  customer,
+  cart
 };

@@ -11,7 +11,8 @@ const PrivateScreen = (WarpComponent, checkLogin = false) => {
 
   return connect(
     state => ({
-      customer: state.customer
+      customer: state.customer,
+      cart: state.cart
     }),
     { ...Actions }
   )(Authen);
