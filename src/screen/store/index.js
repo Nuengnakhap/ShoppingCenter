@@ -11,7 +11,7 @@ import Slider from "../../components/slider";
 import Header from "../../components/header";
 import ProductCart from "../../components/product";
 
-export default class StoreScreen extends Component {
+export default class IndexScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {

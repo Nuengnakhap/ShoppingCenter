@@ -7,8 +7,9 @@ import NavBar from "./components/nav";
 // import "./App.css";
 import "./assets/css/fonts.css";
 import "./assets/css/global.css";
-import StoreScreen from "./screen/store";
+import IndexScreen from "./screen/store";
 import PrivateScreen from "./components/hoc/authentication/PrivateScreen";
+import ProductScreen from "./screen/product";
 
 export default class App extends Component {
   render() {
@@ -19,7 +20,8 @@ export default class App extends Component {
           {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
           <Switch>
-            <Route path="/store" component={PrivateScreen(StoreScreen)} />
+            <Route path="/home" component={PrivateScreen(IndexScreen)} />
+            <Route path="/product" component={PrivateScreen(ProductScreen)} />
             <Route path="/users">
               <HomeScreen />
             </Route>

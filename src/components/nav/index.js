@@ -42,7 +42,7 @@ export default class NavBar extends Component {
 
           <li className="nav__items">
             <FontAwesomeIcon icon={faStore} />
-            <Link to="/store">Store</Link>
+            <Link to="/home">Store</Link>
           </li>
         </ul>
       </nav>
