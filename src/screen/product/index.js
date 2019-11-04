@@ -3,7 +3,7 @@ import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import DetailScreen from "./DetailScreen";
 
 
-function ProductScreen() {
+function ProductNavigator() {
   let match = useRouteMatch();
 
     return (
@@ -35,5 +35,5 @@ function ProductScreen() {
     );
 }
 
-export default ProductScreen
+export default ProductNavigator
 
