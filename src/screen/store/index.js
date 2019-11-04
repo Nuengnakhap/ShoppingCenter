@@ -4,25 +4,17 @@ import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import "../../assets/css/store.css";
 import "hover.css";
-import Cart from "../../components/cart";
 import logo from "../../assets/images/logo/shopping.png";
 import logo2 from "../../assets/images/logo/shopping2.png";
 import Slider from "../../components/slider";
 import Header from "../../components/header";
-import ProductCart from "../../components/product";
+import ProductCart from "../../components/product/ProductCart";
 
 export default class IndexScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cart: props.cart.cart
     }
-  }
-
-  updateCart = (data) => {
-    this.props.setCart(data);
-    let { cart } = this.state;
-    this.setState({ cart: cart })
   }
 
   render() {
@@ -44,10 +36,9 @@ export default class IndexScreen extends Component {
         nav: true
       }
     };
-    let { cart } = this.state;
     return (
       <div className="content">
-        <Cart cart={cart} />
+        {/* <Cart cart={cart} /> */}
         <Header
           mainClass="content-inner logo sec-header"
           logo={logo}
@@ -65,7 +56,7 @@ export default class IndexScreen extends Component {
           <ProductCart
             title="My Product"
             stars={4.5}
-            onPress={() => this.updateCart(1)}
+            onPress={() => this.props.updateCart(1)}
           />
         </Slider>
         <Header

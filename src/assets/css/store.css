@@ -92,6 +92,10 @@
   opacity: 1;
 }
 
+.card-image {
+  width: 100%;
+}
+
 .content-inner > .title {
   color: black;
   font-family: Oxygen-Bold;
@@ -144,4 +148,11 @@
 
 .content-inner.logo > div > .center-images {
   height: 40vmin;
+}
+
+.content-product {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 10vmin;
 }

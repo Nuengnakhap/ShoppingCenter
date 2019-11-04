@@ -29,7 +29,7 @@ function ProductCart(props) {
   };
   
   return (
-    <div className="card-product">
+    <div className="card-product" style={props.style}>
       <div className="card-container">
         <img className="owl-lazy card-image" alt="item" src={bg1} />
         <div className="overlay">
@@ -52,5 +52,6 @@ export default ProductCart;
 ProductCart.propTypes = {
   stars: PropTypes.number,
   title: PropTypes.string,
-  onPress: PropTypes.func
+  onPress: PropTypes.func,
+  style: PropTypes.object
 };
