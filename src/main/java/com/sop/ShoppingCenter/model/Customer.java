@@ -17,7 +17,8 @@ public class Customer extends BaseEntity {
 	private String city;
 	private String state;
 	private String zipCode;
-	
+	private String password;
+
 	public Customer() {
 		super();
 	}
@@ -25,15 +26,15 @@ public class Customer extends BaseEntity {
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
-	
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
@@ -101,5 +102,13 @@ public class Customer extends BaseEntity {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 }

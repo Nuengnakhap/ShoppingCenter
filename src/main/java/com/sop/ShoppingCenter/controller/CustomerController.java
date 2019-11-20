@@ -1,5 +1,7 @@
 package com.sop.ShoppingCenter.controller;
 
+import java.security.Principal;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,12 @@ public class CustomerController implements Controllers {
 		return new ResponseMessage(HttpStatus.OK.value(), customerService.getAll());
 	}
 
+	@GetMapping("/username")
+	public Object currentUserName(Principal principal) {
+//		System.out.println(principal);
+		return customerService.getByUsername(principal.getName());
+	}
+	
 	@Override
 	@PostMapping("/customer")
 	public Object create(@RequestBody @Valid Object item) {
