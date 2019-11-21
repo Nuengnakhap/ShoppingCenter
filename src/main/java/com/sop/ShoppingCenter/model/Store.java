@@ -99,4 +99,12 @@ public class Store extends BaseEntity {
 		this.address = address;
 	}
 
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
 }
