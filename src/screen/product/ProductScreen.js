@@ -24,7 +24,6 @@ export default class ProductScreen extends Component {
         />
         <ProductBox
           {...this.props}
-          title="Products"
           products={["", "", "", "", "", "", "", ""]}
         />
       </div>
