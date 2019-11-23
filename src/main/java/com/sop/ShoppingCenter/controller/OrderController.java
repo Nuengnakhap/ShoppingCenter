@@ -4,7 +4,11 @@ import javax.validation.Valid;
 
 
 import com.sop.ShoppingCenter.model.CustomerOrder;
+import com.sop.ShoppingCenter.model.Orderdetail;
+import com.sop.ShoppingCenter.service.CustomerService;
 import com.sop.ShoppingCenter.service.OrderService;
+import com.sop.ShoppingCenter.service.OrderdetailService;
+import com.sop.ShoppingCenter.service.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -20,6 +24,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sop.ShoppingCenter.response.ResponseMessage;
 
+import java.security.Principal;
+import java.util.List;
+
 
 @RestController
 public class OrderController implements Controllers {
@@ -27,6 +34,10 @@ public class OrderController implements Controllers {
     @Autowired
     @Qualifier("orderService")
     OrderService orderService;
+    CustomerService customerService;
+    Principal principal;
+    OrderdetailService orderdetailService;
+    ShoppingService shoppingService;
 
     @Override
     @GetMapping("/order/{id}")
@@ -46,10 +57,21 @@ public class OrderController implements Controllers {
     @Override
     @PostMapping("/order")
     public Object create(@RequestBody @Valid Object item) {
+
+        CustomerOrder cs = new CustomerOrder();
+        cs.setCustomer(customerService.getByUsername(principal.getName()));
+        orderService.create(cs);
         ObjectMapper mapper = new ObjectMapper();
-        CustomerOrder order = mapper.convertValue(item, new TypeReference<CustomerOrder>() {});
-        orderService.create(order);
-        return new ResponseMessage(HttpStatus.CREATED.value(), order);
+        List<Orderdetail> orderdetail = mapper.convertValue(item, new TypeReference<Orderdetail>() {});
+        for(int i = 0; i < orderdetail.size(); i++) {
+            Orderdetail ot = new Orderdetail();
+            ot = orderdetail.get(i);
+            int count = orderService.getCount();
+            ot.setCustomerOrder((CustomerOrder) orderService.getById(count));
+            orderdetailService.create(ot);
+        }
+
+        return new ResponseMessage(HttpStatus.CREATED.value(), cs);
     }
 
     @Override

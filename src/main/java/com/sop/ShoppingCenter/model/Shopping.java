@@ -30,6 +30,14 @@ public class Shopping extends BaseEntity {
         return image;
     }
 
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
     public void setImage(ArrayList<String> image) {
         this.image = image;
     }

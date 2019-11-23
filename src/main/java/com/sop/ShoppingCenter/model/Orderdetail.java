@@ -17,6 +17,22 @@ public class Orderdetail extends BaseEntity {
     @JoinColumn(nullable = false)
     Shopping shopping;
 
+    public Shopping getShopping() {
+        return shopping;
+    }
+
+    public void setShopping(Shopping shopping) {
+        this.shopping = shopping;
+    }
+
+    public CustomerOrder getCustomerOrder() {
+        return customerOrder;
+    }
+
+    public void setCustomerOrder(CustomerOrder customerOrder) {
+        this.customerOrder = customerOrder;
+    }
+
     @ManyToOne
     @JoinColumn(nullable = false)
     CustomerOrder customerOrder;

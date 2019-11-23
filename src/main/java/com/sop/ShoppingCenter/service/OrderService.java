@@ -58,7 +58,8 @@ public class OrderService implements Services {
         orderRepository.deleteAll();
     }
 
-
+    public int getCount() {
+        return (int) orderRepository.count();}
 
 
 }

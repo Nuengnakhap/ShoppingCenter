@@ -10,7 +10,6 @@ public class CustomerOrder extends BaseEntity {
 
     @Id
     private int id;
-    private float total_price;
 
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -29,15 +28,12 @@ public class CustomerOrder extends BaseEntity {
         this.id = id;
     }
 
-    public float getTotal_price() {
-        return total_price;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setTotal_price(float total_price) {
-        this.total_price = total_price;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
-
-
-
 }
 
