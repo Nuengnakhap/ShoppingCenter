@@ -1,6 +1,7 @@
 package com.sop.ShoppingCenter.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sop.ShoppingCenter.model.Customer;
@@ -28,6 +29,7 @@ public class CustomerService implements Services {
 	@Override
 	public void create(Object item) {
 		Customer cus = (Customer) item;
+		cus.setPassword(new BCryptPasswordEncoder().encode(cus.getPassword()));
 		cus.setId(((int) customerRepository.count() + 1));
 		customerRepository.save(cus);
 	}
@@ -59,6 +61,10 @@ public class CustomerService implements Services {
 	
 	public Boolean getByEmail(String email) {
 		return customerRepository.findByEmail(email).isPresent();
+	}
+	
+	public Customer getByUsername(String email) {
+		return customerRepository.findByEmail(email).get();
 	}
 
 }

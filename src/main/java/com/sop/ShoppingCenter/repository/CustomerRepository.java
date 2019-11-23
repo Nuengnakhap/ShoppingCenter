@@ -11,6 +11,7 @@ import com.sop.ShoppingCenter.model.Customer;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
-	@Query("SELECT t.email FROM Customer t where t.email = :email") 
-	Optional<String> findByEmail(@Param("email") String email);
+	@Query("SELECT t FROM Customer t where t.email = :email") 
+	Optional<Customer> findByEmail(@Param("email") String email);
+//	Customer findByEmail(String email);
 }
