@@ -43,7 +43,7 @@ public class ShoppingController implements Controllers {
     }
 
     @Override
-    @PostMapping("/addproduct")
+    @PostMapping("/product")
     public Object create(@RequestBody @Valid Object item) {
         ObjectMapper mapper = new ObjectMapper();
         Shopping shop = mapper.convertValue(item, new TypeReference<Shopping>() {});
@@ -52,7 +52,7 @@ public class ShoppingController implements Controllers {
     }
 
     @Override
-    @PutMapping("/updateproduct/{id}")
+    @PutMapping("/product/{id}")
     public Object update(@PathVariable int id, @RequestBody @Valid Object item) {
         ObjectMapper mapper = new ObjectMapper();
         Shopping shop = mapper.convertValue(item, new TypeReference<Shopping>() {});
@@ -63,7 +63,7 @@ public class ShoppingController implements Controllers {
     }
 
     @Override
-    @DeleteMapping("/deleteproduct/{id}")
+    @DeleteMapping("/product/{id}")
     public Object deleteById(@PathVariable int id) {
         if (shoppingService.deleteById(id)) {
             return new ResponseMessage(HttpStatus.OK.value(), "Data has been deleted");
@@ -72,7 +72,7 @@ public class ShoppingController implements Controllers {
     }
 
     @Override
-    @DeleteMapping("/deleteproduct")
+    @DeleteMapping("/product")
     public void deleteAll() {
         shoppingService.deleteAll();
     }

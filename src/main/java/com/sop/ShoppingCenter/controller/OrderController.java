@@ -44,7 +44,7 @@ public class OrderController implements Controllers {
     }
 
     @Override
-    @PostMapping("/addorder")
+    @PostMapping("/order")
     public Object create(@RequestBody @Valid Object item) {
         ObjectMapper mapper = new ObjectMapper();
         CustomerOrder order = mapper.convertValue(item, new TypeReference<CustomerOrder>() {});
@@ -53,7 +53,7 @@ public class OrderController implements Controllers {
     }
 
     @Override
-    @PutMapping("/updateorder/{id}")
+    @PutMapping("/order/{id}")
     public Object update(@PathVariable int id, @RequestBody @Valid Object item) {
         ObjectMapper mapper = new ObjectMapper();
         CustomerOrder order = mapper.convertValue(item, new TypeReference<CustomerOrder>() {});
@@ -64,7 +64,7 @@ public class OrderController implements Controllers {
     }
 
     @Override
-    @DeleteMapping("/deleteorder/{id}")
+    @DeleteMapping("/order/{id}")
     public Object deleteById(@PathVariable int id) {
         if (orderService.deleteById(id)) {
             return new ResponseMessage(HttpStatus.OK.value(), "Data has been deleted");
@@ -73,7 +73,7 @@ public class OrderController implements Controllers {
     }
 
     @Override
-    @DeleteMapping("/deleteorder")
+    @DeleteMapping("/order")
     public void deleteAll() {
         orderService.deleteAll();
     }
