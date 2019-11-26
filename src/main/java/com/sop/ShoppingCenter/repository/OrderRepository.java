@@ -1,11 +1,14 @@
 package com.sop.ShoppingCenter.repository;
 
-import com.sop.ShoppingCenter.model.CustomerOrder;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
+import com.sop.ShoppingCenter.model.Customer;
+import com.sop.ShoppingCenter.model.Orders;
 
-@Repository
-public interface OrderRepository extends JpaRepository<CustomerOrder, Integer> {
-
+public interface OrderRepository extends JpaRepository<Orders, Integer> {
+	Optional<List<Orders>> findByCustomer(Customer customer);
 }
+

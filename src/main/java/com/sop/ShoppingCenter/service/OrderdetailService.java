@@ -1,7 +1,8 @@
 package com.sop.ShoppingCenter.service;
 
 
-import com.sop.ShoppingCenter.model.Orderdetail;
+
+import com.sop.ShoppingCenter.model.OrderDetail;
 import com.sop.ShoppingCenter.repository.OrderdetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class OrderdetailService implements Services {
 
     @Override
     public void create(Object item) {
-        Orderdetail orderdetail = (Orderdetail) item;
+        OrderDetail orderdetail = (OrderDetail) item;
         orderdetail.setId(((int) orderdetailRepository.count() + 1));
         orderdetailRepository.save(orderdetail);
     }
@@ -36,7 +37,7 @@ public class OrderdetailService implements Services {
     @Override
     public Boolean update(int id, Object item) {
         if (orderdetailRepository.findById(id).isPresent()) {
-            Orderdetail orderdetail = (Orderdetail) item;
+            OrderDetail orderdetail = (OrderDetail) item;
             orderdetail.setId(id);
             orderdetailRepository.save(orderdetail);
             return true;

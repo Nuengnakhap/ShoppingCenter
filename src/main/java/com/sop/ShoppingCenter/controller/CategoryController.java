@@ -1,7 +1,5 @@
 package com.sop.ShoppingCenter.controller;
 
-import java.security.Principal;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,74 +15,65 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sop.ShoppingCenter.model.Customer;
+import com.sop.ShoppingCenter.model.Category;
 import com.sop.ShoppingCenter.response.ResponseMessage;
-import com.sop.ShoppingCenter.service.CustomerService;
+import com.sop.ShoppingCenter.service.CategoryService;
 
 @RestController
-public class CustomerController implements Controllers {
+public class CategoryController implements Controllers {
 
 	@Autowired
-	@Qualifier("customerService")
-	CustomerService customerService;
-
-	@Override
-	@GetMapping("/customer/{id}")
-	public Object getById(@PathVariable int id) {
-		if (customerService.getById(id) != null) {
-			return new ResponseMessage(HttpStatus.OK.value(), customerService.getById(id));
-		}
-		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
-	}
-
-	@Override
-	@GetMapping("/customer")
-	public Object getAll() {
-		return new ResponseMessage(HttpStatus.OK.value(), customerService.getAll());
-	}
-
-	@GetMapping("/username")
-	public Object currentUserName(Principal principal) {
-//		System.out.println(principal);
-		return customerService.getByUsername(principal.getName()).get();
-	}
+	@Qualifier("categoryService")
+	CategoryService categoryService;
 	
 	@Override
-	@PostMapping("/customer")
-	public Object create(@RequestBody @Valid Object item) {
-		ObjectMapper mapper = new ObjectMapper();
-		Customer cus = mapper.convertValue(item, new TypeReference<Customer>() {});
-		if (customerService.getByEmail(cus.getEmail())) {
-			return new ResponseMessage(HttpStatus.CONFLICT.value(), "Email has already taken");
-		} else {
-			customerService.create(cus);
-			return new ResponseMessage(HttpStatus.CREATED.value(), cus);
-		}
-	}
-
-	@Override
-	@PutMapping("/customer/{id}")
-	public Object update(@PathVariable int id, @RequestBody @Valid Object item) {
-		ObjectMapper mapper = new ObjectMapper();
-		Customer cus = mapper.convertValue(item, new TypeReference<Customer>() {});
-		if (customerService.update(id, cus)) {
-			return new ResponseMessage(HttpStatus.OK.value(), cus);
+	@GetMapping("/category/{id}")
+	public Object getById(@PathVariable int id) {
+		if (categoryService.getById(id) != null) {
+			return new ResponseMessage(HttpStatus.OK.value(), categoryService.getById(id));
 		}
 		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
 	}
 
 	@Override
-	@DeleteMapping("/customer/{id}")
+	@GetMapping("/category")
+	public Object getAll() {
+		return new ResponseMessage(HttpStatus.OK.value(), categoryService.getAll());
+	}
+
+	@Override
+	@PostMapping("/category")
+	public Object create(@RequestBody @Valid Object item) {
+		ObjectMapper mapper = new ObjectMapper();
+		Category cate = mapper.convertValue(item, new TypeReference<Category>(){});
+		categoryService.create(cate);
+		return categoryService.getAll();
+	}
+
+	@Override
+	@PutMapping("/category/{id}")
+	public Object update(@PathVariable int id, @RequestBody @Valid Object item) {
+		ObjectMapper mapper = new ObjectMapper();
+		Category cate = mapper.convertValue(item, new TypeReference<Category>(){});
+		if (categoryService.update(id, cate)) {
+			return new ResponseMessage(HttpStatus.OK.value(), cate);
+		}
+		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
+	}
+
+	@Override
+	@DeleteMapping("/category/{id}")
 	public Object deleteById(@PathVariable int id) {
-		if (customerService.deleteById(id)) {
+		if (categoryService.deleteById(id)) {
 			return new ResponseMessage(HttpStatus.OK.value(), "Data has been deleted");
 		}
 		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
 	}
 
 	@Override
-	@DeleteMapping("/customer")
+	@DeleteMapping("/category")
 	public void deleteAll() {
-		customerService.deleteAll();
+		categoryService.deleteAll();
 	}
+
 }

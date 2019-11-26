@@ -1,65 +1,67 @@
 package com.sop.ShoppingCenter.service;
 
+import java.util.List;
 
-import com.sop.ShoppingCenter.model.CustomerOrder;
-import com.sop.ShoppingCenter.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sop.ShoppingCenter.model.Customer;
+import com.sop.ShoppingCenter.model.Orders;
+import com.sop.ShoppingCenter.repository.OrderRepository;
 
 @Service("orderService")
 public class OrderService implements Services {
 
-    @Autowired
-    OrderRepository orderRepository;
+	@Autowired
+	OrderRepository orderRepository;
+	
+	@Override
+	public Object getById(int id) {
+		if (orderRepository.findById(id).isPresent()) {
+			return orderRepository.findById(id);
+		}
+		return null;
+	}
 
-    @Override
-    public Object getById(int id) {
-        if (orderRepository.findById(id).isPresent()) {
-            return orderRepository.findById(id);
-        }
-        return null;
-    }
+	@Override
+	public Object getAll() {
+		return orderRepository.findAll();
+	}
 
-    @Override
-    public Object getAll() {
-        return orderRepository.findAll();
-    }
+	@Override
+	public void create(Object item) {
+		Orders order = (Orders) item;
+		orderRepository.save(order);
+	}
 
-    @Override
-    public void create(Object item) {
-        CustomerOrder order = (CustomerOrder) item;
-        order.setId(((int) orderRepository.count() + 1));
-        orderRepository.save(order);
-    }
+	@Override
+	public Boolean update(int id, Object item) {
+		if (orderRepository.findById(id).isPresent()) {
+			Orders order = (Orders) item;
+			order.setId(id);
+			orderRepository.save(order);
+			return true;
+		}
+		return false;
+	}
 
-    @Override
-    public Boolean update(int id, Object item) {
-        if (orderRepository.findById(id).isPresent()) {
-            CustomerOrder order = (CustomerOrder) item;
-            order.setId(id);
-            orderRepository.save(order);
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public Boolean deleteById(int id) {
+		if (orderRepository.findById(id).isPresent()) {
+			orderRepository.deleteById(id);
+			return true;
+		}
+		return false;
+	}
 
-    @Override
-    public Boolean deleteById(int id) {
-        if (orderRepository.findById(id).isPresent()) {
-            orderRepository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void deleteAll() {
-        orderRepository.deleteAll();
-    }
-
-    public int getCount() {
-        return (int) orderRepository.count();}
-
+	@Override
+	public void deleteAll() {
+		orderRepository.deleteAll();
+	}
+	
+	public List<Orders> getByCustomer(Customer cus) {
+		return orderRepository.findByCustomer(cus).get();
+	}
 
 }
+

@@ -1,18 +1,15 @@
 package com.sop.ShoppingCenter.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import javax.validation.Valid;
 
-
-import com.sop.ShoppingCenter.model.CustomerOrder;
-import com.sop.ShoppingCenter.model.Orderdetail;
-import com.sop.ShoppingCenter.service.CustomerService;
-import com.sop.ShoppingCenter.service.OrderService;
-import com.sop.ShoppingCenter.service.OrderdetailService;
-import com.sop.ShoppingCenter.service.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,81 +19,88 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sop.ShoppingCenter.model.Customer;
+import com.sop.ShoppingCenter.model.Orders;
+import com.sop.ShoppingCenter.model.OrderDetail;
+import com.sop.ShoppingCenter.model.Store;
 import com.sop.ShoppingCenter.response.ResponseMessage;
-
-import java.security.Principal;
-import java.util.List;
-
+import com.sop.ShoppingCenter.service.CustomerService;
+import com.sop.ShoppingCenter.service.OrderService;
 
 @RestController
 public class OrderController implements Controllers {
 
-    @Autowired
-    @Qualifier("orderService")
-    OrderService orderService;
-    CustomerService customerService;
-    Principal principal;
-    OrderdetailService orderdetailService;
-    ShoppingService shoppingService;
+	@Autowired
+	@Qualifier("orderService")
+	OrderService orderService;
 
-    @Override
-    @GetMapping("/order/{id}")
-    public Object getById(@PathVariable int id) {
-        if (orderService.getById(id) != null) {
-            return new ResponseMessage(HttpStatus.OK.value(), orderService.getById(id));
-        }
-        return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
-    }
+	@Autowired
+	@Qualifier("customerService")
+	CustomerService customerService;
 
-    @Override
-    @GetMapping("/order")
-    public Object getAll() {
-        return new ResponseMessage(HttpStatus.OK.value(), orderService.getAll());
-    }
+//	private Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//	private ObjectMapper mapper = new ObjectMapper();
+//	private Customer customer = customerService.getByUsername(auth.getName()).get();
 
-    @Override
-    @PostMapping("/order")
-    public Object create(@RequestBody @Valid Object item) {
+	@Override
+	@GetMapping("/order/{id}")
+	public Object getById(@PathVariable int id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		ObjectMapper mapper = new ObjectMapper();
+		Optional<Orders> order = mapper.convertValue(orderService.getById(id), new TypeReference<Optional<Orders>>() {
+		});
+		if (order.get().getCustomer().getEmail() == auth.getName()) {
+			return new ResponseMessage(HttpStatus.OK.value(), order.get());
+		}
+		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
+	}
 
-        CustomerOrder cs = new CustomerOrder();
-        cs.setCustomer(customerService.getByUsername(principal.getName()));
-        orderService.create(cs);
-        ObjectMapper mapper = new ObjectMapper();
-        List<Orderdetail> orderdetail = mapper.convertValue(item, new TypeReference<Orderdetail>() {});
-        for(int i = 0; i < orderdetail.size(); i++) {
-            Orderdetail ot = new Orderdetail();
-            ot = orderdetail.get(i);
-            int count = orderService.getCount();
-            ot.setCustomerOrder((CustomerOrder) orderService.getById(count));
-            orderdetailService.create(ot);
-        }
+	@Override
+	@GetMapping("/order")
+	public Object getAll() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Customer customer = customerService.getByUsername(auth.getName()).get();
+		return orderService.getByCustomer(customer);
+	}
 
-        return new ResponseMessage(HttpStatus.CREATED.value(), cs);
-    }
+	@Override
+	@PostMapping("/order")
+	public Object create(@RequestBody @Valid Object item) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		ObjectMapper mapper = new ObjectMapper();
+		Customer customer = customerService.getByUsername(auth.getName()).get();
+		List<OrderDetail> details = mapper.convertValue(item, new TypeReference<List<OrderDetail>>() {
+		});
+		Orders order = new Orders();
+		order.setCustomer(customer);
+		order.setDetails(details);
+		orderService.create(order);
+		return orderService.getByCustomer(customer);
+	}
 
-    @Override
-    @PutMapping("/order/{id}")
-    public Object update(@PathVariable int id, @RequestBody @Valid Object item) {
-        ObjectMapper mapper = new ObjectMapper();
-        CustomerOrder order = mapper.convertValue(item, new TypeReference<CustomerOrder>() {});
-        if (orderService.update(id, order)) {
-            return new ResponseMessage(HttpStatus.OK.value(), order);
-        }
-        return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
-    }
+	@Override
+	@PutMapping("/order/{id}")
+	public Object update(@PathVariable int id, @RequestBody @Valid Object item) {
+		ObjectMapper mapper = new ObjectMapper();
+		Store store = mapper.convertValue(item, new TypeReference<Store>() {
+		});
+		if (orderService.update(id, store)) {
+			return new ResponseMessage(HttpStatus.OK.value(), store);
+		}
+		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
+	}
 
-    @Override
-    @DeleteMapping("/order/{id}")
-    public Object deleteById(@PathVariable int id) {
-        if (orderService.deleteById(id)) {
-            return new ResponseMessage(HttpStatus.OK.value(), "Data has been deleted");
-        }
-        return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
-    }
+	@Override
+	public Object deleteById(@PathVariable int id) {
+		if (orderService.deleteById(id)) {
+			return new ResponseMessage(HttpStatus.OK.value(), "Data has been deleted");
+		}
+		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
+	}
 
-    @Override
-    @DeleteMapping("/order")
-    public void deleteAll() {
-        orderService.deleteAll();
-    }
+	@Override
+	public void deleteAll() {
+		orderService.deleteAll();
+	}
 }
+

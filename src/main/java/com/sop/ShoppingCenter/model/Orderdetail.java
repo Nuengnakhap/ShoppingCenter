@@ -1,68 +1,71 @@
 package com.sop.ShoppingCenter.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Orderdetail extends BaseEntity {
+public class OrderDetail extends BaseEntity {
 
-    @Id
-    private int id;
-    private int quantity;
-    private float price;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	private int quantity;
+	private float price;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    Shopping shopping;
+	@ManyToOne
+	@JoinColumn(nullable = false)
+	Product product;
 
-    public Shopping getShopping() {
-        return shopping;
-    }
+	@ManyToOne
+	@JoinColumn(nullable = false)
+	Orders order;
 
-    public void setShopping(Shopping shopping) {
-        this.shopping = shopping;
-    }
+	public OrderDetail() {
+		super();
+	}
 
-    public CustomerOrder getCustomerOrder() {
-        return customerOrder;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setCustomerOrder(CustomerOrder customerOrder) {
-        this.customerOrder = customerOrder;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    CustomerOrder customerOrder;
+	public int getQuantity() {
+		return quantity;
+	}
 
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 
-    public Orderdetail() {
-        super();
-    }
+	public float getPrice() {
+		return price;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public void setPrice(float price) {
+		this.price = price;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public Product getProduct() {
+		return product;
+	}
 
-    public int getQuantity() {
-        return quantity;
-    }
+	public void setProduct(Product product) {
+		this.product = product;
+	}
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+	public Orders getOrder() {
+		return order;
+	}
 
-    public float getPrice() {
-        return price;
-    }
+	public void setOrder(Orders order) {
+		this.order = order;
+	}
 
-    public void setPrice(float price) {
-        this.price = price;
-    }
 }
