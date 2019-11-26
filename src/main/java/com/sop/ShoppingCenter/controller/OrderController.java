@@ -1,13 +1,14 @@
 package com.sop.ShoppingCenter.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sop.ShoppingCenter.model.Customer;
-import com.sop.ShoppingCenter.model.Orders;
 import com.sop.ShoppingCenter.model.OrderDetail;
+import com.sop.ShoppingCenter.model.Orders;
+import com.sop.ShoppingCenter.model.Product;
 import com.sop.ShoppingCenter.model.Store;
+import com.sop.ShoppingCenter.model.SummaryOrderDetail;
 import com.sop.ShoppingCenter.response.ResponseMessage;
 import com.sop.ShoppingCenter.service.CustomerService;
+import com.sop.ShoppingCenter.service.OrderDetailService;
 import com.sop.ShoppingCenter.service.OrderService;
+import com.sop.ShoppingCenter.service.ProductService;
 
 @RestController
 public class OrderController implements Controllers {
@@ -35,8 +40,16 @@ public class OrderController implements Controllers {
 	OrderService orderService;
 
 	@Autowired
+	@Qualifier("orderDetailService")
+	OrderDetailService orderDetailService;
+
+	@Autowired
 	@Qualifier("customerService")
 	CustomerService customerService;
+
+	@Autowired
+	@Qualifier("productService")
+	ProductService productService;
 
 //	private Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //	private ObjectMapper mapper = new ObjectMapper();
@@ -45,14 +58,26 @@ public class OrderController implements Controllers {
 	@Override
 	@GetMapping("/order/{id}")
 	public Object getById(@PathVariable int id) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		ObjectMapper mapper = new ObjectMapper();
-		Optional<Orders> order = mapper.convertValue(orderService.getById(id), new TypeReference<Optional<Orders>>() {
-		});
-		if (order.get().getCustomer().getEmail() == auth.getName()) {
-			return new ResponseMessage(HttpStatus.OK.value(), order.get());
+		try {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			Orders order = (Orders) orderService.getById(id);
+			if (order.equals(null)) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+						.body(new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found"));
+			}
+			List<SummaryOrderDetail> details = new ArrayList<SummaryOrderDetail>();
+			for (OrderDetail detail : orderDetailService.getByOrder(order)) {
+				details.add(new SummaryOrderDetail(detail));
+			}
+			if (order.getCustomer().getEmail().equalsIgnoreCase(auth.getName())) {
+				return new ResponseMessage(HttpStatus.OK.value(), details);
+			}
+			return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+					.body(new ResponseMessage(HttpStatus.METHOD_NOT_ALLOWED.value(), "You don't have permission!"));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found"));
 		}
-		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
 	}
 
 	@Override
@@ -60,7 +85,7 @@ public class OrderController implements Controllers {
 	public Object getAll() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Customer customer = customerService.getByUsername(auth.getName()).get();
-		return orderService.getByCustomer(customer);
+		return new ResponseMessage(HttpStatus.OK.value(), orderService.getByCustomer(customer));
 	}
 
 	@Override
@@ -73,9 +98,34 @@ public class OrderController implements Controllers {
 		});
 		Orders order = new Orders();
 		order.setCustomer(customer);
-		order.setDetails(details);
-		orderService.create(order);
-		return orderService.getByCustomer(customer);
+		order = orderService.create(order);
+
+		float total_price = 0;
+		List<Product> products = new ArrayList<Product>();
+		for (OrderDetail orderDetail : details) {
+			Product product = (Product) productService.getById(orderDetail.getProduct_id());
+			if (product == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+						.body(new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found"));
+			}
+			orderDetail.setProduct(product);
+			orderDetail.setOrder(order);
+			orderDetail.setPrice(product.getPrice() * orderDetail.getQuantity());
+			total_price += orderDetail.getPrice();
+
+			int stock = product.getStock_quantity() - orderDetail.getQuantity();
+			product.setStock_quantity(stock);
+			products.add(product);
+		}
+
+		order.setTotal_price(total_price);
+		if (orderService.update(order.getId(), order)) {
+			orderDetailService.createMany(details);
+			productService.updateMany(products);
+			return new ResponseMessage(HttpStatus.OK.value(), orderService.getByCustomer(customer));
+		}
+		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+				.body(new ResponseMessage(HttpStatus.METHOD_NOT_ALLOWED.value(), "Cannot create order!"));
 	}
 
 	@Override
@@ -87,7 +137,8 @@ public class OrderController implements Controllers {
 		if (orderService.update(id, store)) {
 			return new ResponseMessage(HttpStatus.OK.value(), store);
 		}
-		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found"));
 	}
 
 	@Override
@@ -95,7 +146,8 @@ public class OrderController implements Controllers {
 		if (orderService.deleteById(id)) {
 			return new ResponseMessage(HttpStatus.OK.value(), "Data has been deleted");
 		}
-		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found"));
 	}
 
 	@Override

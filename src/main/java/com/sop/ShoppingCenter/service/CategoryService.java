@@ -15,7 +15,7 @@ public class CategoryService implements Services {
 	@Override
 	public Object getById(int id) {
 		if (categoryRepository.findById(id).isPresent()) {
-			return categoryRepository.findById(id);
+			return categoryRepository.findById(id).get();
 		}
 		return null;
 	}

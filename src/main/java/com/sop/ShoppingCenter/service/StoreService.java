@@ -1,8 +1,13 @@
 package com.sop.ShoppingCenter.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.sop.ShoppingCenter.model.Store;
+import com.sop.ShoppingCenter.model.SummaryStore;
 import com.sop.ShoppingCenter.repository.StoreRepository;
 
 @Service
@@ -21,7 +26,11 @@ public class StoreService implements Services {
 
 	@Override
 	public Object getAll() {
-		return storeRepository.findAll();
+		List<SummaryStore> stores = new ArrayList<SummaryStore>(); 
+		for (Store store : storeRepository.findAll()) {
+			stores.add(new SummaryStore(store));
+		}
+		return stores;
 	}
 
 	@Override
@@ -56,11 +65,11 @@ public class StoreService implements Services {
 		storeRepository.deleteAll();
 	}
 
-	public Object getProducts(int id) {
-		if (storeRepository.findById(id).isPresent()) {
-			return storeRepository.findById(id).get().getProducts();
-		}
-		return null;
-	}
+//	public Object getProducts(int id) {
+//		if (storeRepository.findById(id).isPresent()) {
+//			return storeRepository.findById(id).get().getProducts();
+//		}
+//		return null;
+//	}
 
 }

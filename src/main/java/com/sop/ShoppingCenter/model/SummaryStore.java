@@ -1,16 +1,10 @@
 package com.sop.ShoppingCenter.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-@Entity
-public class Store extends BaseEntity {
-
-	@Id
+public class SummaryStore {
 	private int id;
 	private String storeName;
+	private String firstName;
+	private String lastName;
 	private String phone;
 	private String email;
 	private String address;
@@ -19,15 +13,19 @@ public class Store extends BaseEntity {
 	private String state;
 	private String zipCode;
 
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	Customer customer;
-
-//	@OneToMany(mappedBy = "store")
-//	private List<Product> products;
-
-	public Store() {
+	public SummaryStore(Store store) {
 		super();
+		this.id = store.getId();
+		this.storeName = store.getStoreName();
+		this.phone = store.getPhone();
+		this.email = store.getEmail();
+		this.address = store.getAddress();
+		this.street = store.getStreet();
+		this.city = store.getCity();
+		this.state = store.getState();
+		this.zipCode = store.getZipCode();
+		this.firstName = store.getCustomer().getFirstName();
+		this.lastName = store.getCustomer().getLastName();
 	}
 
 	public int getId() {
@@ -46,6 +44,22 @@ public class Store extends BaseEntity {
 		this.storeName = storeName;
 	}
 
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
 	public String getPhone() {
 		return phone;
 	}
@@ -60,6 +74,14 @@ public class Store extends BaseEntity {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getStreet() {
@@ -92,22 +114,6 @@ public class Store extends BaseEntity {
 
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
 	}
 
 }

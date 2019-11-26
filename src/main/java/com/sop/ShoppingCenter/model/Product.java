@@ -1,12 +1,11 @@
 package com.sop.ShoppingCenter.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity
@@ -17,12 +16,12 @@ public class Product extends BaseEntity {
 	private String name;
 	private int stock_quantity;
 	private float price;
+//
+//	@OneToMany(mappedBy = "product")
+//	private List<Image> image;
 
-	@OneToMany(mappedBy = "product")
-	private List<Image> image;
-	
-	@Transient
-	private List<String> images;
+//	@Transient
+	private ArrayList<String> images;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
@@ -32,6 +31,8 @@ public class Product extends BaseEntity {
 	@JoinColumn(nullable = false)
 	Store store;
 
+//	@Transient
+//	private int store_id;
 	@Transient
 	private int category_id;
 
@@ -87,12 +88,12 @@ public class Product extends BaseEntity {
 		this.category = category;
 	}
 
-	public void setImage(List<Image> image) {
-		this.image = image;
+	public ArrayList<String> getImages() {
+		return images;
 	}
 
-	public List<Image> getImage() {
-		return image;
+	public void setImages(ArrayList<String> images) {
+		this.images = images;
 	}
 
 	public int getCategory_id() {
@@ -101,14 +102,6 @@ public class Product extends BaseEntity {
 
 	public void setCategory_id(int category_id) {
 		this.category_id = category_id;
-	}
-
-	public List<String> getImages() {
-		return images;
-	}
-
-	public void setImages(List<String> images) {
-		this.images = images;
 	}
 
 }

@@ -1,5 +1,8 @@
 package com.sop.ShoppingCenter.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sop.ShoppingCenter.model.Product;
+import com.sop.ShoppingCenter.model.SummaryProduct;
 import com.sop.ShoppingCenter.response.ResponseMessage;
 import com.sop.ShoppingCenter.service.ProductService;
 
-@RestController("product")
+@RestController
 public class ProductController implements Controllers {
 
 	@Autowired
@@ -21,20 +26,25 @@ public class ProductController implements Controllers {
 	ProductService productService;
 
 	@Override
-	@GetMapping("/{id}")
+	@GetMapping("/product/{id}")
 	public Object getById(@PathVariable int id) {
 		if (productService.getById(id) != null) {
-			return new ResponseMessage(HttpStatus.OK.value(), productService.getById(id));
+			return new ResponseMessage(HttpStatus.OK.value(), new SummaryProduct((Product) productService.getById(id)));
 		}
 		return new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	@GetMapping("/")
+	@GetMapping("/product")
 	public Object getAll() {
-		return new ResponseMessage(HttpStatus.OK.value(), productService.getAll());
+		List<SummaryProduct> products = new ArrayList<SummaryProduct>();
+		for (Product product : (List<Product>) productService.getAll()) {
+			products.add(new SummaryProduct(product));
+		}
+		return new ResponseMessage(HttpStatus.OK.value(), products);
 	}
-	
+
 	@Override
 	public Object create(@RequestBody @Valid Object item) {
 		return item;

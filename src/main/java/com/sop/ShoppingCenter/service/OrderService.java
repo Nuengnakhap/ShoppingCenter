@@ -14,13 +14,17 @@ public class OrderService implements Services {
 
 	@Autowired
 	OrderRepository orderRepository;
-	
+
 	@Override
 	public Object getById(int id) {
-		if (orderRepository.findById(id).isPresent()) {
-			return orderRepository.findById(id);
+		try {
+			if (orderRepository.findById(id).isPresent()) {
+				return orderRepository.findById(id).get();
+			}
+			return null;
+		} catch (Exception e) {
+			return null;
 		}
-		return null;
 	}
 
 	@Override
@@ -32,6 +36,10 @@ public class OrderService implements Services {
 	public void create(Object item) {
 		Orders order = (Orders) item;
 		orderRepository.save(order);
+	}
+
+	public Orders create(Orders order) {
+		return orderRepository.save(order);
 	}
 
 	@Override
@@ -58,9 +66,12 @@ public class OrderService implements Services {
 	public void deleteAll() {
 		orderRepository.deleteAll();
 	}
-	
+
 	public List<Orders> getByCustomer(Customer cus) {
-		return orderRepository.findByCustomer(cus).get();
+		if (orderRepository.findByCustomer(cus).isPresent()) {
+			return orderRepository.findByCustomer(cus).get();
+		}
+		return null;
 	}
 
 }

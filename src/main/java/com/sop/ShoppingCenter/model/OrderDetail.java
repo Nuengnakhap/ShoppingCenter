@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class OrderDetail extends BaseEntity {
@@ -23,6 +24,9 @@ public class OrderDetail extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	Orders order;
+	
+	@Transient
+	private int product_id;
 
 	public OrderDetail() {
 		super();
@@ -66,6 +70,14 @@ public class OrderDetail extends BaseEntity {
 
 	public void setOrder(Orders order) {
 		this.order = order;
+	}
+
+	public int getProduct_id() {
+		return product_id;
+	}
+
+	public void setProduct_id(int product_id) {
+		this.product_id = product_id;
 	}
 
 }
