@@ -1,5 +1,7 @@
 package com.sop.ShoppingCenter.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,8 +65,8 @@ public class CustomerService implements Services {
 		return customerRepository.findByEmail(email).isPresent();
 	}
 	
-	public Customer getByUsername(String email) {
-		return customerRepository.findByEmail(email).get();
+	public Optional<Customer> getByUsername(String email) {
+		return customerRepository.findByEmail(email);
 	}
 
 }

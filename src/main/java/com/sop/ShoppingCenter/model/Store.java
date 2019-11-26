@@ -1,9 +1,12 @@
 package com.sop.ShoppingCenter.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Store extends BaseEntity {
@@ -22,6 +25,9 @@ public class Store extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	Customer customer;
+	
+	@OneToMany(mappedBy = "store")
+	private List<Product> products;
 
 	public Store() {
 		super();
@@ -105,6 +111,14 @@ public class Store extends BaseEntity {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 
 }

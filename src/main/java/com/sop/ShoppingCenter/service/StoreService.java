@@ -10,11 +10,11 @@ public class StoreService implements Services {
 
 	@Autowired
 	StoreRepository storeRepository;
-	
+
 	@Override
 	public Object getById(int id) {
 		if (storeRepository.findById(id).isPresent()) {
-			return storeRepository.findById(id);
+			return storeRepository.findById(id).get();
 		}
 		return null;
 	}
@@ -54,6 +54,13 @@ public class StoreService implements Services {
 	@Override
 	public void deleteAll() {
 		storeRepository.deleteAll();
+	}
+
+	public Object getProducts(int id) {
+		if (storeRepository.findById(id).isPresent()) {
+			return storeRepository.findById(id).get().getProducts();
+		}
+		return null;
 	}
 
 }
