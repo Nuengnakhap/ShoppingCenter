@@ -1,5 +1,7 @@
 package com.sop.ShoppingCenter.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +28,7 @@ public class BillingService implements Services {
 		return billingRepository.findAll();
 	}
 	
-	public Billing getByCustomer(Customer customer) {
+	public List<Billing> getByCustomer(Customer customer) {
 		return billingRepository.findByCustomer(customer).get();
 	}
 

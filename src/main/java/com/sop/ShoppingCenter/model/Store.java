@@ -18,6 +18,8 @@ public class Store extends BaseEntity {
 	private String city;
 	private String state;
 	private String zipCode;
+	private float stars;
+	private int people_stars;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
@@ -108,6 +110,22 @@ public class Store extends BaseEntity {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	public float getStars() {
+		return stars;
+	}
+
+	public void setStars(float stars) {
+		this.stars = stars;
+	}
+
+	public int getPeople_stars() {
+		return people_stars;
+	}
+
+	public void setPeople_stars(int people_stars) {
+		this.people_stars = people_stars;
 	}
 
 }

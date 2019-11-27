@@ -1,5 +1,8 @@
 package com.sop.ShoppingCenter.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sop.ShoppingCenter.model.Billing;
 import com.sop.ShoppingCenter.model.Customer;
 import com.sop.ShoppingCenter.model.Orders;
+import com.sop.ShoppingCenter.model.SummaryBilling;
 import com.sop.ShoppingCenter.response.ResponseMessage;
 import com.sop.ShoppingCenter.service.BillingService;
 import com.sop.ShoppingCenter.service.CustomerService;
@@ -47,8 +51,8 @@ public class BillingController implements Controllers {
 			if (!billing.equals(null)) {
 				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 				if (billing.getCustomer().getEmail().equalsIgnoreCase(auth.getName())) {
-					return ResponseEntity.status(HttpStatus.OK)
-							.body(new ResponseMessage(HttpStatus.OK.value(), billingService.getById(id)));
+					return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(HttpStatus.OK.value(),
+							new SummaryBilling((Billing) billingService.getById(id))));
 				}
 				return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
 						.body(new ResponseMessage(HttpStatus.METHOD_NOT_ALLOWED.value(), "You don't have permission"));
@@ -69,8 +73,11 @@ public class BillingController implements Controllers {
 		try {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			Customer customer = customerService.getByUsername(auth.getName()).get();
-			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponseMessage(HttpStatus.OK.value(), billingService.getByCustomer(customer)));
+			List<SummaryBilling> billings = new ArrayList<SummaryBilling>();
+			for (Billing billing : billingService.getByCustomer(customer)) {
+				billings.add(new SummaryBilling(billing));
+			}
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(HttpStatus.OK.value(), billings));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found"));
@@ -101,8 +108,9 @@ public class BillingController implements Controllers {
 				billing.setCustomer(order.getCustomer());
 				billingService.create(billing);
 				orderService.update(order.getId(), order);
-				return ResponseEntity.status(HttpStatus.CREATED)
-						.body(new ResponseMessage(HttpStatus.CREATED.value(), billingService.getAll()));
+				
+				return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage(HttpStatus.CREATED.value(),
+						"Bill has been created"));
 			}
 			return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
 					.body(new ResponseMessage(HttpStatus.METHOD_NOT_ALLOWED.value(), "You don't have permission!"));

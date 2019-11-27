@@ -16,6 +16,8 @@ public class Product extends BaseEntity {
 	private String name;
 	private int stock_quantity;
 	private float price;
+	private float stars;
+	private int people_stars;
 //
 //	@OneToMany(mappedBy = "product")
 //	private List<Image> image;
@@ -102,6 +104,22 @@ public class Product extends BaseEntity {
 
 	public void setCategory_id(int category_id) {
 		this.category_id = category_id;
+	}
+
+	public float getStars() {
+		return stars;
+	}
+
+	public void setStars(float stars) {
+		this.stars = stars;
+	}
+
+	public int getPeople_stars() {
+		return people_stars;
+	}
+
+	public void setPeople_stars(int people_stars) {
+		this.people_stars = people_stars;
 	}
 
 }

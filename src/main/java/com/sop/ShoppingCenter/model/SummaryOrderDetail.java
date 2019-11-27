@@ -5,6 +5,7 @@ public class SummaryOrderDetail {
 	private int order_id;
 	private int quantity;
 	private float price;
+	private boolean rated;
 	private SummaryProduct product;
 
 	public SummaryOrderDetail(OrderDetail detail) {
@@ -13,6 +14,7 @@ public class SummaryOrderDetail {
 		this.order_id = detail.getOrder().getId();
 		this.quantity = detail.getQuantity();
 		this.price = detail.getPrice();
+		this.setRated(detail.isRated());
 		this.product = new SummaryProduct(detail.getProduct());
 	}
 
@@ -54,6 +56,14 @@ public class SummaryOrderDetail {
 
 	public void setProduct(SummaryProduct product) {
 		this.product = product;
+	}
+
+	public boolean isRated() {
+		return rated;
+	}
+
+	public void setRated(boolean rated) {
+		this.rated = rated;
 	}
 
 }

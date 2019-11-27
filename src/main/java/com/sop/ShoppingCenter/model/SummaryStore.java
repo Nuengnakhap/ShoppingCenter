@@ -12,6 +12,8 @@ public class SummaryStore {
 	private String city;
 	private String state;
 	private String zipCode;
+	private float stars;
+	private int peopleStars;
 
 	public SummaryStore(Store store) {
 		super();
@@ -26,6 +28,8 @@ public class SummaryStore {
 		this.zipCode = store.getZipCode();
 		this.firstName = store.getCustomer().getFirstName();
 		this.lastName = store.getCustomer().getLastName();
+		this.stars = store.getStars();
+		this.peopleStars = store.getPeople_stars();
 	}
 
 	public int getId() {
@@ -114,6 +118,22 @@ public class SummaryStore {
 
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
+	}
+
+	public float getStars() {
+		return stars;
+	}
+
+	public void setStars(float stars) {
+		this.stars = stars;
+	}
+
+	public int getPeopleStars() {
+		return peopleStars;
+	}
+
+	public void setPeopleStars(int peopleStars) {
+		this.peopleStars = peopleStars;
 	}
 
 }

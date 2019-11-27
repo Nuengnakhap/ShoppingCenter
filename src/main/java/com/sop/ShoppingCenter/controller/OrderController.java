@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -104,7 +105,7 @@ public class OrderController implements Controllers {
 		List<Product> products = new ArrayList<Product>();
 		for (OrderDetail orderDetail : details) {
 			Product product = (Product) productService.getById(orderDetail.getProduct_id());
-			if (product == null) {
+			if (product.equals(null)) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND)
 						.body(new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found"));
 			}
@@ -114,6 +115,11 @@ public class OrderController implements Controllers {
 			total_price += orderDetail.getPrice();
 
 			int stock = product.getStock_quantity() - orderDetail.getQuantity();
+			if (stock < 0) {
+				orderService.deleteById(order.getId());
+				return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+						.body(new ResponseMessage(HttpStatus.METHOD_NOT_ALLOWED.value(), "The number of products is not enough!"));
+			}
 			product.setStock_quantity(stock);
 			products.add(product);
 		}
@@ -142,10 +148,44 @@ public class OrderController implements Controllers {
 	}
 
 	@Override
+	@DeleteMapping("/order/{id}")
 	public Object deleteById(@PathVariable int id) {
-		if (orderService.deleteById(id)) {
-			return new ResponseMessage(HttpStatus.OK.value(), "Data has been deleted");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		ObjectMapper mapper = new ObjectMapper();
+		Customer customer = customerService.getByUsername(auth.getName()).get();
+		Orders order = (Orders) orderService.getById(id);
+		
+		if (order.equals(null)) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found"));
 		}
+		if (!order.getCustomer().getEmail().equalsIgnoreCase(customer.getEmail())) {
+			return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+					.body(new ResponseMessage(HttpStatus.METHOD_NOT_ALLOWED.value(), "You don't have permission!"));
+		}
+		
+		List<Product> products = new ArrayList<Product>();
+		List<OrderDetail> details = orderDetailService.getByOrder(order);
+		for (OrderDetail orderDetail : details) {
+			Product product = (Product) productService.getById(orderDetail.getProduct().getId());
+			if (product.equals(null)) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+						.body(new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found"));
+			}
+			int stock = product.getStock_quantity() + orderDetail.getQuantity();
+			product.setStock_quantity(stock);
+			products.add(product);
+		}
+		order.setType("closed");
+		
+		if (orderService.update(order.getId(), order)) {
+			productService.updateMany(products);
+			return new ResponseMessage(HttpStatus.OK.value(), orderService.getByCustomer(customer));
+		}
+		
+//		if (orderService.deleteById(id)) {
+//			return new ResponseMessage(HttpStatus.OK.value(), "Data has been deleted");
+//		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
 				.body(new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Data not found"));
 	}

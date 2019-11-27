@@ -16,6 +16,7 @@ public class OrderDetail extends BaseEntity {
 	private int id;
 	private int quantity;
 	private float price;
+	private boolean rated = false;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
@@ -78,6 +79,14 @@ public class OrderDetail extends BaseEntity {
 
 	public void setProduct_id(int product_id) {
 		this.product_id = product_id;
+	}
+
+	public boolean isRated() {
+		return rated;
+	}
+
+	public void setRated(boolean rated) {
+		this.rated = rated;
 	}
 
 }

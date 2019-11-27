@@ -8,6 +8,8 @@ public class SummaryProduct {
 	private String name;
 	private int stock_quantity;
 	private float price;
+	private float stars;
+	private int peopleStars;
 	private ArrayList<String> images;
 	private Category category;
 	private SummaryStore store;
@@ -21,6 +23,8 @@ public class SummaryProduct {
 		this.images = product.getImages();
 		this.category = product.getCategory();
 		this.store = new SummaryStore(product.getStore());
+		this.stars = product.getStars();
+		this.peopleStars = product.getPeople_stars();
 	}
 
 	public int getId() {
@@ -77,6 +81,22 @@ public class SummaryProduct {
 
 	public void setStore(SummaryStore store) {
 		this.store = store;
+	}
+
+	public float getStars() {
+		return stars;
+	}
+
+	public void setStars(float stars) {
+		this.stars = stars;
+	}
+
+	public int getPeopleStars() {
+		return peopleStars;
+	}
+
+	public void setPeopleStars(int peopleStars) {
+		this.peopleStars = peopleStars;
 	}
 
 }

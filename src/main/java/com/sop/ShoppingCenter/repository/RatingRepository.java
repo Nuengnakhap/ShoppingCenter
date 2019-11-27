@@ -6,10 +6,10 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.sop.ShoppingCenter.model.Billing;
 import com.sop.ShoppingCenter.model.Customer;
+import com.sop.ShoppingCenter.model.Rating;
 
 @Repository
-public interface BillingRepository extends JpaRepository<Billing, Integer> {
-	Optional<List<Billing>> findByCustomer(Customer customer);
+public interface RatingRepository extends JpaRepository<Rating, Integer> {
+	Optional<List<Rating>> findByCustomer(Customer customer);
 }
