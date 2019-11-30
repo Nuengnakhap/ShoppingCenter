@@ -18,6 +18,8 @@ Shopping Center เป็นระบบที่ให้บริการใ�
   <a href="./Shopping Center.pptx">Shopping Center</a>
 
 ## How to use
+### Auth Service
+  - In this repo -> https://github.com/Nuengnakhap/Microservice-Oauth2/tree/master/AuthorizationService
 ### Account
   - POST http://onezlinks.jvmhost.net/shop/customer สมัครสมาชิก
     - {
