@@ -13,3 +13,72 @@ Shopping Center เป็นระบบที่ให้บริการใ�
  - Biling Service -> เมื่อผู้ใช้ชำระสินค้า จะทำหน้าที่เก็บรายละเอียดของการชำระสินค้า
  - Rating Service -> ทำหหน้าที่ให้ผู้ใช้ได้ให้คะเนนกับสินค้าที่ตนเองได้ซื้อไปแล้ว และวิเคราห์คะแนนของแต่ละร้านค้า
 <img src="./gitImg/MicroService.png">
+
+## Presentation
+  <a href="./Shopping Center.pptx">Shopping Center</a>
+
+## How to use
+### Account
+  - POST http://onezlinks.jvmhost.net/shop/customer สมัครสมาชิก
+    - {
+	      "email": "",
+	      "firstName": "",
+	      "lastName": "",
+	      "phone": "",
+	      "address": "",
+	      "street": "",
+	      "city": "",
+	      "state": "",
+	      "zipCode": "",
+	      "password": ""
+      }
+  - POST http://onezlinks.jvmhost.net/auth-service/login เข้าสู่ระบบ
+    - Basic Auth -> Username: cilent_id || Password: client_password
+    - Body with x-www-form-urlencoded -> username: "Your email", password: "Your password", grant_type: "password"
+### Product
+  - GET http://onezlinks.jvmhost.net/shop/category ดูหมวดหมู่ของสินค้าทั้งหมด
+  - GET http://onezlinks.jvmhost.net/shop/product ดูสินค้าทั้งหมด
+### Store
+  - GET http://onezlinks.jvmhost.net/shop/store ดูร้านค้าทั้งหมด
+  - GET http://onezlinks.jvmhost.net/shop/store/1/product ดูสินค้าของร้านค้าทั้งหมด
+  - POST with Token http://onezlinks.jvmhost.net/shop/store/1 สร้างสินค้าของร้านค้า
+    - [{
+        "name": "",
+        "stock_quantity": 0,
+        "price": 0,
+        "images": [],
+        "category_id": 1
+      }]
+  - PUT with OAuth Token http://onezlinks.jvmhost.net/shop/store/1/product/1 แก้ไขสินค้าในร้านค้า
+    - {
+        "name": "",
+        "stock_quantity": 0,
+        "price": 0,
+        "images": [],
+        "category_id": 1
+      }
+### Order
+  - GET with token http://onezlinks.jvmhost.net/shop/order ดูภาพรวมรายการการสั่งซื้อของตัวเองทั้งหมด
+  - GET with token http://onezlinks.jvmhost.net/shop/order/1 ดูรายละเอียดของรายการการสั่งซื้อของตัวเอง
+  - POST with token http://onezlinks.jvmhost.net/shop/order สร้างรายการการสั่งซื้อของตัวเอง
+    - [
+        {
+          "product_id": 3,
+          "quantity": 10
+        }
+      ]
+  - DELETE with token http://onezlinks.jvmhost.net/shop/order/1 ลบรายการการสั่งซื้อของตัวเอง
+### Billing
+  - GET with token http://onezlinks.jvmhost.net/shop/billing ดูรายการที่ชำระเงินแล้วของตัวเอง
+  - POST with token http://onezlinks.jvmhost.net/shop/billing สร้างรายการการชำระเงิน
+    - {
+        "order_id": 1
+      }
+### Rating
+  - GET with token http://onezlinks.jvmhost.net/shop/rating ดูรายการที่ตัวเองเคยให้คะแนนกับสินค้า
+  - POST with token http://onezlinks.jvmhost.net/shop/rating ให้คะแนนกับสินค้าที่ตัวเองซื้อ
+    - {
+        "stars": 4.5,
+        "billing_id": 1,
+        "orderDetail_id": 1
+      }
